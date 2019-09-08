@@ -240,8 +240,8 @@ class Transaction
             throw new Exceptions\MissingTransactionTokenException();
         }
 
-        if ($amount <= 0) {
-            throw new Exceptions\InvalidAmountException('purchase method requires an amount greater than 0.');
+        if ($amount < 0) {
+            throw new Exceptions\InvalidAmountException('purchase method requires an amount of 0 or greater.');
         }
 
         $params = [

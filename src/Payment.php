@@ -315,8 +315,8 @@ class Payment
             throw new Exceptions\MissingPaymentTokenException();
         }
 
-        if ($amount <= 0) {
-            throw new Exceptions\InvalidAmountException($method.' method requires an amount greater than 0.');
+        if ($amount < 0) {
+            throw new Exceptions\InvalidAmountException($method.' method requires an amount of 0 or greater.');
         }
 
         $params = [
