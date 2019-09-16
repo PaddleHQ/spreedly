@@ -45,6 +45,11 @@ class Client
         return $this->request($url, 'put', $data);
     }
 
+    protected function getBaseUrl(): string
+    {
+        return $this->config['base_url'] ?? self::BASE_URL;
+    }
+
     /**
      * Create the CURL request.
      *
@@ -57,7 +62,7 @@ class Client
     protected function request($url, $method, array $data = null)
     {
         try {
-            $response = $this->client->{$method}(self::BASE_URL.$url, $this->buildData($data));
+            $response = $this->client->{$method}($this->getBaseUrl().$url, $this->buildData($data));
 
             if (!in_array($response->getStatusCode(), [200, 201])) {
                 $contentType = $response->getHeader('Content-Type');
