@@ -111,12 +111,16 @@ class Spreedly
         if (!isset($this->config['secret'])) {
             throw new Exceptions\InvalidConfigException();
         }
+
+        if (isset($this->config['base_url']) && !filter_var($this->config['base_url'], FILTER_VALIDATE_URL)) {
+            throw new Exceptions\InvalidConfigException();
+        }
     }
 
     /**
      * Create Guzzle instance.
      *
-     * @return \GuzzleHttp\Client
+     * @return Client
      */
     public function client()
     {

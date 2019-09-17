@@ -44,6 +44,46 @@ class ClientSpec extends ObjectBehavior
         $this->response()->shouldReturn($array['gateway']);
     }
 
+    public function it_sets_base_url_with_trailing_slash($client)
+    {
+        $this->beConstructedWith($client, [
+            'key' => '12345',
+            'secret' => '67890',
+            'base_url' => 'https://example.com/',
+        ]);
+        $this->getBaseUrl()->shouldReturn('https://example.com/');
+    }
+
+    public function it_sets_base_url_without_trailing_slash($client)
+    {
+        $this->beConstructedWith($client, [
+            'key' => '12345',
+            'secret' => '67890',
+            'base_url' => 'https://example.com',
+        ]);
+        $this->getBaseUrl()->shouldReturn('https://example.com/');
+    }
+
+    public function it_sets_base_url_with_null($client)
+    {
+        $this->beConstructedWith($client, [
+            'key' => '12345',
+            'secret' => '67890',
+            'base_url' => null,
+        ]);
+        $this->getBaseUrl()->shouldReturn(self::BASE_URL);
+    }
+
+    public function it_sets_base_url_with_invalid_url($client)
+    {
+        $this->beConstructedWith($client, [
+            'key' => '12345',
+            'secret' => '67890',
+            'base_url' => 'abcd',
+        ]);
+        $this->getBaseUrl()->shouldReturn(self::BASE_URL);
+    }
+
     public function it_returns_an_array_without_any_keys_containing_an_at_symbol_attribute()
     {
         $this->setResponse([

@@ -8,7 +8,7 @@ use GuzzleHttp\Exception\ConnectException as GuzzleConnectException;
 
 class Client
 {
-    const BASE_URL = 'https://core.spreedly.com/';
+    const DEFAULT_BASE_URL = 'https://core.spreedly.com/';
     const TIMEOUT = 64;
     const CONNECT_TIMEOUT = 10;
 
@@ -17,6 +17,7 @@ class Client
     protected $response;
     protected $status;
     protected $key;
+    protected $baseUrl;
 
     /**
      * Set config.
@@ -27,6 +28,19 @@ class Client
     public function __construct(GuzzleInterface $client, $config)
     {
         $this->client = $client;
+        $this->setConfig($config);
+    }
+
+    protected function setConfig($config)
+    {
+        if(array_key_exists('base_url', $config) && filter_var($config['base_url'], FILTER_VALIDATE_URL)) {
+            // Make sure it always has a trailing slash
+            $this->baseUrl = rtrim($config['base_url'],"/").'/';
+            unset($config['base_url']);
+        } else {
+            $this->baseUrl = self::DEFAULT_BASE_URL;
+        }
+
         $this->config = $config;
     }
 
@@ -45,6 +59,11 @@ class Client
         return $this->request($url, 'put', $data);
     }
 
+    public function getBaseUrl(): string
+    {
+        return $this->baseUrl;
+    }
+
     /**
      * Create the CURL request.
      *
@@ -57,7 +76,7 @@ class Client
     protected function request($url, $method, array $data = null)
     {
         try {
-            $response = $this->client->{$method}(self::BASE_URL.$url, $this->buildData($data));
+            $response = $this->client->{$method}($this->getBaseUrl().$url, $this->buildData($data));
 
             if (!in_array($response->getStatusCode(), [200, 201])) {
                 $contentType = $response->getHeader('Content-Type');
