@@ -52,6 +52,18 @@ class SpreedlySpec extends ObjectBehavior
             ->duringSetConfig($config);
     }
 
+    public function it_throws_an_exception_if_base_url_is_invalid()
+    {
+        $config = [
+            'key' => 'asad',
+            'secret' => 'dsad',
+            'base_url' => 'dsajkbdjks'
+        ];
+
+        $this->shouldThrow('Tuurbo\Spreedly\Exceptions\InvalidConfigException')
+            ->duringSetConfig($config);
+    }
+
     public function it_throws_an_exception_if_gateway_token_is_not_set()
     {
         $this->payment(self::PAYMENT_TOKEN)

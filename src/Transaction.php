@@ -11,9 +11,9 @@ class Transaction
     /**
      * Create a Guzzle instance and set token.
      *
-     * @param \GuzzleHttp\Client $client
-     * @param array              $config
-     * @param string             $transactionToken optional
+     * @param Client $client
+     * @param array  $config
+     * @param string $transactionToken optional
      */
     public function __construct(Client $client, $config, $transactionToken = null)
     {
@@ -79,7 +79,7 @@ class Transaction
                     }
 
                     foreach ($urls as $url) {
-                        $transactions[] = $this->client->get(str_replace(Client::BASE_URL, '', $url))->response();
+                        $transactions[] = $this->client->get(str_replace($this->client->getBaseUrl(), '', $url))->response();
                     }
 
                     $this->client->setResponse([
