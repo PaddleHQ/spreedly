@@ -294,7 +294,7 @@ class Client
             ],
             'timeout' => isset($this->config['timeout']) ? $this->config['timeout'] : self::TIMEOUT,
             'connect_timeout' => isset($this->config['connect_timeout']) ? $this->config['connect_timeout'] : self::CONNECT_TIMEOUT,
-            'exceptions' => false,
+            'http_errors' => false,
             'headers' => [
                 'Content-type' => 'application/json',
             ],

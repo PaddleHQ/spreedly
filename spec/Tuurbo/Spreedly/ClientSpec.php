@@ -2,10 +2,12 @@
 
 namespace spec\Tuurbo\Spreedly;
 
+use GuzzleHttp\Psr7\Stream;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
+use Psr\Http\Message\StreamInterface;
 
 class ClientSpec extends ObjectBehavior
 {
@@ -191,30 +193,34 @@ class ClientSpec extends ObjectBehavior
 
 class ClientStub200 extends GuzzleResponse
 {
-    public function getStatusCode()
+    public function getStatusCode(): int
     {
         return 200;
     }
 
-    public function getHeader($header)
+    public function getHeader($header): array
     {
         return ['application/json; charset=utf-8'];
     }
 
-    public function getBody()
+    public function getBody(): StreamInterface
     {
-        return json_encode([]);
+        $stream = fopen('php://temp', 'r+');
+        fwrite($stream, json_encode([]));
+        fseek($stream, 0);
+
+        return new Stream($stream);
     }
 }
 
 class ClientStub404 extends GuzzleResponse
 {
-    public function getStatusCode()
+    public function getStatusCode(): int
     {
         return 404;
     }
 
-    public function getHeader($header)
+    public function getHeader($header): array
     {
         return ['application/text; charset=utf-8'];
     }
@@ -227,12 +233,12 @@ class ClientStub404 extends GuzzleResponse
 
 class ClientStub500 extends GuzzleResponse
 {
-    public function getStatusCode()
+    public function getStatusCode(): int
     {
         return 500;
     }
 
-    public function getHeader($header)
+    public function getHeader($header): array
     {
         return ['application/text; charset=utf-8'];
     }
