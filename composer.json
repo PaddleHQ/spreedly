@@ -11,14 +11,19 @@
 	],
 	"require": {
 		"php": ">=7.2.0",
-		"guzzlehttp/guzzle": "^6.0"
+		"guzzlehttp/guzzle": "^6.0|^7.0"
 	},
 	"require-dev": {
-		"phpspec/phpspec": "~2.4"
+		"phpspec/phpspec": "^7.1"
 	},
 	"autoload": {
 		"psr-4": {
 			"Tuurbo\\Spreedly\\": "src/"
 		}
-	}
+	},
+	"autoload-dev": {
+        "psr-4": { 
+			"spec\\": "spec/"
+		 }
+    }
 }
